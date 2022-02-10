@@ -1,32 +1,21 @@
 <template>
     <div>
-        <h2>Hello, this is the board</h2>
-        <button @click.prevent="logout">Logout</button>
+        Welcome {{ name }}
     </div>
 </template>
 
 <script>
 export default {
+    name: "Dashboard",
     data() {
         return {
-            user: null
+            name: null,
         }
     },
-    methods: {
-      logout() {
-          axios.post('/api/logout').then(() => {
-              this.$router.push({name: "home"})
-          })
-      }
-    },
-    mounted() {
-        axios.get('/api/user').then((res) => {
-            this.user = res.data
-        })
+    created() {
+        if (window.Laravel.user) {
+            this.name = window.Laravel.user.name
+        }
     }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,14 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('login', [UserController::class, 'login']);
+Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::group(['prefix' => 'categories', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('categories', [CategoryController::class, 'index']);
+    Route::post('add', [CategoryController::class, 'create']);
+    Route::get('edit/{id}', [CategoryController::class, 'edit']);
+    Route::post('update/{id}', [CategoryController::class, 'update']);
+    Route::delete('delete/{id}', [CategoryController::class, 'delete']);
 });
-
-
-Route::middleware('cors')->group(function(){
-    Route::get('posts', [App\Http\Controllers\PostsController::class, 'index'])->middleware('auth:sanctum');
-    Route::post('login', [App\Http\Controllers\LoginController::class, 'login'])->name('login');
-    Route::post('logout', [App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
-});
-

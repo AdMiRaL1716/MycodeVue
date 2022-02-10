@@ -2,40 +2,86 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "./views/Home";
 import Login from "./views/Login";
-import Posts from "./views/Posts";
 import Dashboard from "./views/Dashboard";
+import Categories from "./views/categories/Categories";
+import CreateCategory from "./views/categories/CreateCategory";
+import UpdateCategory from "./views/categories/UpdateCategory";
 
 Vue.use(VueRouter)
-
-import middleware from './middleware';
 
 export default new VueRouter({
     mode: "history",
     routes: [
         {
+            path: "/",
+            name: "home",
+            component: Home,
+        },
+        {
             path: "/home",
             name: "home",
             component: Home,
-            beforeEnter: middleware.guest,
         },
         {
             path: "/login",
             name: "login",
             component: Login,
-            beforeEnter: middleware.guest,
         },
         {
             path: "/dashboard",
             name: "dashboard",
             component: Dashboard,
             meta: {layout: 'board'},
-            beforeEnter: middleware.user,
+            beforeEnter(to, from, next) {
+                if (!window.Laravel.isLoggedin) {
+                    window.location.href = "/login";
+                }
+                else {
+                    next()
+                }
+            }
         },
         {
-            path: '/posts',
-            name: 'posts',
-            component: Posts,
-            beforeEnter: middleware.user
+            path: "/categories",
+            name: "categories",
+            component: Categories,
+            meta: {layout: 'board'},
+            beforeEnter(to, from, next) {
+                if (!window.Laravel.isLoggedin) {
+                    window.location.href = "/login";
+                }
+                else {
+                    next()
+                }
+            }
+        },
+        {
+            path: "/categories/add",
+            name: "createcategory",
+            component: CreateCategory,
+            meta: {layout: 'board'},
+            beforeEnter(to, from, next) {
+                if (!window.Laravel.isLoggedin) {
+                    window.location.href = "/login";
+                }
+                else {
+                    next()
+                }
+            }
+        },
+        {
+            path: "/updatecategory",
+            name: "categories/edit/:id",
+            component: UpdateCategory,
+            meta: {layout: 'board'},
+            beforeEnter(to, from, next) {
+                if (!window.Laravel.isLoggedin) {
+                    window.location.href = "/login";
+                }
+                else {
+                    next()
+                }
+            }
         },
     ]
 })
