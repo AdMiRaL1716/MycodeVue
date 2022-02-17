@@ -70,8 +70,8 @@ export default new VueRouter({
             }
         },
         {
-            path: "/updatecategory",
-            name: "categories/edit/:id",
+            path: "/categories/edit/:id",
+            name: "editcategory",
             component: UpdateCategory,
             meta: {layout: 'board'},
             beforeEnter(to, from, next) {

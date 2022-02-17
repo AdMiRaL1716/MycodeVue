@@ -5681,8 +5681,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "UpdateCategory"
+  data: function data() {
+    return {
+      category: {}
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get('/sanctum/csrf-cookie').then(function (response) {
+      axios.get("/api/categories/edit/".concat(_this.$route.params.id)).then(function (response) {
+        _this.category = response.data;
+      })["catch"](function (error) {
+        console.error(error);
+      });
+    });
+  },
+  methods: {
+    updateCategory: function updateCategory() {
+      var _this2 = this;
+
+      axios.get('/sanctum/csrf-cookie').then(function (response) {
+        axios.post("/api/categories/update/".concat(_this2.$route.params.id), _this2.category).then(function (response) {
+          _this2.$router.push({
+            name: 'categories'
+          });
+        })["catch"](function (error) {
+          console.error(error);
+        });
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -5842,8 +5889,8 @@ vue__WEBPACK_IMPORTED_MODULE_6__["default"].use(vue_router__WEBPACK_IMPORTED_MOD
       }
     }
   }, {
-    path: "/updatecategory",
-    name: "categories/edit/:id",
+    path: "/categories/edit/:id",
+    name: "editcategory",
     component: _views_categories_UpdateCategory__WEBPACK_IMPORTED_MODULE_5__["default"],
     meta: {
       layout: 'board'
@@ -29585,7 +29632,84 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c("div", [
+    _c("h4", { staticClass: "text-center" }, [_vm._v("Edit Category")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6" }, [
+        _c(
+          "form",
+          {
+            on: {
+              submit: function ($event) {
+                $event.preventDefault()
+                return _vm.updateCategory.apply(null, arguments)
+              },
+            },
+          },
+          [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", [_vm._v("Name")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.category.name,
+                    expression: "category.name",
+                  },
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text" },
+                domProps: { value: _vm.category.name },
+                on: {
+                  input: function ($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.category, "name", $event.target.value)
+                  },
+                },
+              }),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", [_vm._v("Filter")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.category.filter,
+                    expression: "category.filter",
+                  },
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text" },
+                domProps: { value: _vm.category.filter },
+                on: {
+                  input: function ($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.category, "filter", $event.target.value)
+                  },
+                },
+              }),
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+              [_vm._v("Update category")]
+            ),
+          ]
+        ),
+      ]),
+    ]),
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
