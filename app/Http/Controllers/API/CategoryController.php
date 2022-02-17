@@ -44,6 +44,7 @@ class CategoryController extends Controller
 
     public function delete($id)
     {
-        return CategoryService::delete($id, $this->link);
+        CategoryService::delete($id, $this->link);
+        return response()->json('The category successfully deleted');
     }
 }
